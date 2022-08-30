@@ -15,12 +15,14 @@ public class PlayerRaycastInteraction : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerInputHandler.Instance.InteractButtonPressed += InteractWithObject;
+        if(PlayerInputHandler.Instance != null)
+            PlayerInputHandler.Instance.InteractButtonPressed += InteractWithObject;
     }
 
     private void OnDisable()
     {
-        PlayerInputHandler.Instance.InteractButtonPressed += InteractWithObject;
+        if(PlayerInputHandler.Instance != null)
+            PlayerInputHandler.Instance.InteractButtonPressed += InteractWithObject;
     }
 
     private void Start()
@@ -37,12 +39,12 @@ public class PlayerRaycastInteraction : MonoBehaviour
         if (Physics.Raycast(_playerCamera.transform.position, localForward, out hit, _rayLength, _layerMaskInteractable.value))
         {
             hitGameObject = hit.collider.gameObject;
-            OnFoundInteractable.Invoke(true);
+            OnFoundInteractable?.Invoke(true);
         }
         else
         {
             hitGameObject = null;
-            OnFoundInteractable.Invoke(false);
+            OnFoundInteractable?.Invoke(false);
         }
     }
 
@@ -50,8 +52,8 @@ public class PlayerRaycastInteraction : MonoBehaviour
     {
         if (hitGameObject != null)
         {
-            var Interactable = hitGameObject.GetComponent<IInteractable>();
-            Interactable.Interact();
+            var interactable = hitGameObject.GetComponent<IInteractable>();
+            interactable.Interact();
         }
     }
 }
