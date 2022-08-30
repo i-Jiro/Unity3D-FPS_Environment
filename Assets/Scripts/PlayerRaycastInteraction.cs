@@ -22,7 +22,7 @@ public class PlayerRaycastInteraction : MonoBehaviour
     private void OnDisable()
     {
         if(PlayerInputHandler.Instance != null)
-            PlayerInputHandler.Instance.InteractButtonPressed += InteractWithObject;
+            PlayerInputHandler.Instance.InteractButtonPressed -= InteractWithObject;
     }
 
     private void Start()
