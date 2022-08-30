@@ -45,4 +45,10 @@ public class FirstPersonCameraController : MonoBehaviour
         _xRotation -= _input.LookInput.y * Sensitivity;
         _yRotation += _input.LookInput.x * Sensitivity;
     }
+    
+    //Called on by Unity Event in pause menu UI.
+    public void ChangeSensitivity(float value)
+    {
+        Sensitivity = value;
+    }
 }
