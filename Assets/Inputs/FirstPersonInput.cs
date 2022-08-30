@@ -53,6 +53,15 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""65129afc-5668-47b0-b2cb-f403dd1dbcf2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -132,6 +141,17 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8f2f8fe7-2947-492f-ab19-8bbe75f171d5"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse and Keyboard"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -160,6 +180,7 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
         m_FirstPerson_Look = m_FirstPerson.FindAction("Look", throwIfNotFound: true);
         m_FirstPerson_Move = m_FirstPerson.FindAction("Move", throwIfNotFound: true);
         m_FirstPerson_Interact = m_FirstPerson.FindAction("Interact", throwIfNotFound: true);
+        m_FirstPerson_Pause = m_FirstPerson.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -222,6 +243,7 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_FirstPerson_Look;
     private readonly InputAction m_FirstPerson_Move;
     private readonly InputAction m_FirstPerson_Interact;
+    private readonly InputAction m_FirstPerson_Pause;
     public struct FirstPersonActions
     {
         private @FirstPersonInput m_Wrapper;
@@ -229,6 +251,7 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_FirstPerson_Look;
         public InputAction @Move => m_Wrapper.m_FirstPerson_Move;
         public InputAction @Interact => m_Wrapper.m_FirstPerson_Interact;
+        public InputAction @Pause => m_Wrapper.m_FirstPerson_Pause;
         public InputActionMap Get() { return m_Wrapper.m_FirstPerson; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -247,6 +270,9 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
                 @Interact.started -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnInteract;
+                @Pause.started -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_FirstPersonActionsCallbackInterface = instance;
             if (instance != null)
@@ -260,6 +286,9 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -278,5 +307,6 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

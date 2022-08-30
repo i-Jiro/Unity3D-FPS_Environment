@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,8 +12,11 @@ public class PlayerInputHandler : MonoBehaviour
     public static PlayerInputHandler Instance;
     public FirstPersonInput Inputs { get; private set; }
 
+    public bool MovementInputActive = true;
     public delegate void InteractButtonEventHandler();
     public event InteractButtonEventHandler InteractButtonPressed;
+    public delegate void PauseButtonEventHandler();
+    public event PauseButtonEventHandler PauseButtonPressed;
     
 
     //Register to C# events.
@@ -24,6 +28,7 @@ public class PlayerInputHandler : MonoBehaviour
         Inputs.FirstPerson.Look.performed += SetLook;
         Inputs.FirstPerson.Look.canceled += SetLook;
         Inputs.FirstPerson.Interact.performed += OnInteractPress;
+        Inputs.FirstPerson.Pause.performed += OnPausePress;
         Inputs.Enable();
     }
 
@@ -49,19 +54,36 @@ public class PlayerInputHandler : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-    
+
     private void SetMove(InputAction.CallbackContext ctx)
     {
-        MoveInput = ctx.ReadValue<Vector2>();
+        if(MovementInputActive)
+            MoveInput = ctx.ReadValue<Vector2>();
+        else
+        {
+            MoveInput = Vector2.zero;
+        }
     }
 
     private void SetLook(InputAction.CallbackContext ctx)
     {
-        LookInput = ctx.ReadValue<Vector2>();
+        if (MovementInputActive)
+        {
+            LookInput = ctx.ReadValue<Vector2>();
+        }
+        else
+        {
+            LookInput = Vector2.zero;
+        }
     }
 
     private void OnInteractPress(InputAction.CallbackContext ctx)
     {
-        InteractButtonPressed.Invoke();
+        InteractButtonPressed?.Invoke();
+    }
+
+    private void OnPausePress(InputAction.CallbackContext ctx)
+    {
+        PauseButtonPressed?.Invoke();
     }
 }
