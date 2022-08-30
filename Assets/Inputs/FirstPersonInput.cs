@@ -44,6 +44,15 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""d9d1801c-fd4a-45f9-bf16-950555a82a94"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -112,6 +121,17 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""babf2973-0df2-4437-998b-3cb5032b67d6"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse and Keyboard"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -139,6 +159,7 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
         m_FirstPerson = asset.FindActionMap("First Person", throwIfNotFound: true);
         m_FirstPerson_Look = m_FirstPerson.FindAction("Look", throwIfNotFound: true);
         m_FirstPerson_Move = m_FirstPerson.FindAction("Move", throwIfNotFound: true);
+        m_FirstPerson_Interact = m_FirstPerson.FindAction("Interact", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -200,12 +221,14 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
     private IFirstPersonActions m_FirstPersonActionsCallbackInterface;
     private readonly InputAction m_FirstPerson_Look;
     private readonly InputAction m_FirstPerson_Move;
+    private readonly InputAction m_FirstPerson_Interact;
     public struct FirstPersonActions
     {
         private @FirstPersonInput m_Wrapper;
         public FirstPersonActions(@FirstPersonInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Look => m_Wrapper.m_FirstPerson_Look;
         public InputAction @Move => m_Wrapper.m_FirstPerson_Move;
+        public InputAction @Interact => m_Wrapper.m_FirstPerson_Interact;
         public InputActionMap Get() { return m_Wrapper.m_FirstPerson; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -221,6 +244,9 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
                 @Move.started -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnMove;
+                @Interact.started -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnInteract;
             }
             m_Wrapper.m_FirstPersonActionsCallbackInterface = instance;
             if (instance != null)
@@ -231,6 +257,9 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
             }
         }
     }
@@ -248,5 +277,6 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
     {
         void OnLook(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
 }

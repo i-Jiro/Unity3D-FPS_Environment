@@ -9,28 +9,33 @@ public class PlayerInputHandler : MonoBehaviour
     public Vector2 MoveInput { get; private set; } = Vector2.zero;
     public Vector2 LookInput { get; private set; } = Vector2.zero;
     public static PlayerInputHandler Instance;
-    private FirstPersonInput _inputs;
+    public FirstPersonInput Inputs { get; private set; }
+
+    public delegate void InteractButtonEventHandler();
+    public event InteractButtonEventHandler InteractButtonPressed;
+    
 
     //Register to C# events.
     private void OnEnable()
     {
-        _inputs = new FirstPersonInput();
-        _inputs.FirstPerson.Move.performed += SetMove;
-        _inputs.FirstPerson.Move.canceled += SetMove;
-        _inputs.FirstPerson.Look.performed += SetLook;
-        _inputs.FirstPerson.Look.canceled += SetLook;
-        _inputs.Enable();
-
+        Inputs = new FirstPersonInput();
+        Inputs.FirstPerson.Move.performed += SetMove;
+        Inputs.FirstPerson.Move.canceled += SetMove;
+        Inputs.FirstPerson.Look.performed += SetLook;
+        Inputs.FirstPerson.Look.canceled += SetLook;
+        Inputs.FirstPerson.Interact.performed += OnInteractPress;
+        Inputs.Enable();
     }
 
     //Unsubscribe to events.
     private void OnDisable()
     {
-        _inputs.FirstPerson.Move.performed -= SetMove;
-        _inputs.FirstPerson.Move.canceled -= SetMove;
-        _inputs.FirstPerson.Look.performed -= SetLook;
-        _inputs.FirstPerson.Look.canceled -= SetLook;
-        _inputs.Disable();
+        Inputs.FirstPerson.Move.performed -= SetMove;
+        Inputs.FirstPerson.Move.canceled -= SetMove;
+        Inputs.FirstPerson.Look.performed -= SetLook;
+        Inputs.FirstPerson.Look.canceled -= SetLook;
+        Inputs.FirstPerson.Interact.performed -= OnInteractPress;
+        Inputs.Disable();
     }
 
     private void Awake()
@@ -55,4 +60,8 @@ public class PlayerInputHandler : MonoBehaviour
         LookInput = ctx.ReadValue<Vector2>();
     }
 
+    private void OnInteractPress(InputAction.CallbackContext ctx)
+    {
+        InteractButtonPressed.Invoke();
+    }
 }
