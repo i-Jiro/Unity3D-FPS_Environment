@@ -8,7 +8,7 @@ public class PlayerInputHandler : MonoBehaviour
 {
     public Vector2 MoveInput { get; private set; } = Vector2.zero;
     public Vector2 LookInput { get; private set; } = Vector2.zero;
-
+    public static PlayerInputHandler Instance;
     private FirstPersonInput _inputs;
 
     //Register to C# events.
@@ -31,6 +31,18 @@ public class PlayerInputHandler : MonoBehaviour
         _inputs.FirstPerson.Look.performed -= SetLook;
         _inputs.FirstPerson.Look.canceled -= SetLook;
         _inputs.Disable();
+    }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
     }
     
     private void SetMove(InputAction.CallbackContext ctx)

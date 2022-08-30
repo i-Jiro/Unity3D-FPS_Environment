@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private PlayerInputHandler _input;
+    private PlayerInputHandler _input;
     [SerializeField] private float _movementSpeed = 5f;
     private Vector3 _direction;
     private Rigidbody _rigidbody;
@@ -13,6 +13,14 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        if (PlayerInputHandler.Instance != null)
+        {
+            _input = PlayerInputHandler.Instance;
+        }
+        else
+        {
+            Debug.LogError("Player Input Handler not found on scene!");
+        }
     }
 
     // Update is called once per frame

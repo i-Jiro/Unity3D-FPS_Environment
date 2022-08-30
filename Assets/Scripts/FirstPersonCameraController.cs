@@ -8,7 +8,7 @@ public class FirstPersonCameraController : MonoBehaviour
 {
     public float Sensitivity = 1.0f;
     private Camera _playerCamera;
-    [SerializeField] private PlayerInputHandler _input;
+    private PlayerInputHandler _input;
     [SerializeField] private Transform _cameraPosition;
     private float _xRotation;
     private float _yRotation;
@@ -19,6 +19,14 @@ public class FirstPersonCameraController : MonoBehaviour
         _playerCamera = Camera.main;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        if (PlayerInputHandler.Instance != null)
+        {
+            _input = PlayerInputHandler.Instance;
+        }
+        else
+        {
+            Debug.LogError("Player Input Handler not found on scene!");
+        }
     }
     
     void LateUpdate()
