@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cabinet : MonoBehaviour, IInteractable
+public class CabinetBehavior : MonoBehaviour, IInteractable
 {
     private Animator _animator;
     private bool _isOpen = false;
@@ -17,12 +17,12 @@ public class Cabinet : MonoBehaviour, IInteractable
     {
         if (!_isOpen)
         {
-            Debug.Log("Opened.");
+            _animator.SetBool("IsOpen", true);
             _isOpen = true;
         }
         else
         {
-            Debug.Log("Closed.");
+            _animator.SetBool("IsOpen", false);
             _isOpen = false;
         }
     }
