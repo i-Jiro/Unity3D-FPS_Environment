@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Cinemachine;
 
 public class FirstPersonCameraController : MonoBehaviour
 {
     public float Sensitivity = 1.0f;
-    private Camera _playerCamera;
+    [SerializeField] private CinemachineVirtualCamera _playerCamera;
     private PlayerInputHandler _input;
     [SerializeField] private Transform _cameraPosition;
     private float _xRotation;
@@ -16,7 +17,6 @@ public class FirstPersonCameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _playerCamera = Camera.main;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         if (PlayerInputHandler.Instance != null)
