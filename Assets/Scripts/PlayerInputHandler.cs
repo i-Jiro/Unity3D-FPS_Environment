@@ -18,9 +18,10 @@ public class PlayerInputHandler : MonoBehaviour
     public event InteractButtonEventHandler InteractButtonPressed;
     public delegate void PauseButtonEventHandler();
     public event PauseButtonEventHandler PauseButtonPressed;
-
     public delegate void FireButtonEventHandler();
     public event FireButtonEventHandler FireButtonPressed;
+    public delegate void AltFireButtonEventHandler();
+    public event AltFireButtonEventHandler AltFireButtonPressed;
     
 
     //Register to C# events.
@@ -35,6 +36,7 @@ public class PlayerInputHandler : MonoBehaviour
         Inputs.FirstPerson.Pause.performed += OnPausePress;
         Inputs.FirstPerson.Select.performed += SetSelect;
         Inputs.FirstPerson.Fire.performed += OnPrimaryFire;
+        Inputs.FirstPerson.AltFire.performed += OnAltFire;
         Inputs.Enable();
     }
 
@@ -104,4 +106,10 @@ public class PlayerInputHandler : MonoBehaviour
     {
         FireButtonPressed?.Invoke();
     }
+    
+    private void OnAltFire(InputAction.CallbackContext ctx)
+    {
+        AltFireButtonPressed?.Invoke();
+    }
+    
 }

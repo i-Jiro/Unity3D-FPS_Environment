@@ -61,7 +61,7 @@ public class PlayerRaycastInteraction : MonoBehaviour
 
     public void EnterComputerInteraction()
     {
-        OnFoundInteractable?.Invoke(false);
+        OnFoundInteractable?.Invoke(false); //Turn off leftover interaction message
         IsOnComputerCam = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -83,7 +83,6 @@ public class PlayerRaycastInteraction : MonoBehaviour
         Ray ray = _playerCamera.ScreenPointToRay(PlayerInputHandler.Instance.MousePosition);
         if (Physics.Raycast(ray, out hit, 10f, _layerMaskKeyboard.value))
         {
-            Debug.Log("Found " + hit.collider.gameObject.name);
             var interactable = hit.collider.GetComponent<IInteractable>();
             interactable?.Interact();
         }

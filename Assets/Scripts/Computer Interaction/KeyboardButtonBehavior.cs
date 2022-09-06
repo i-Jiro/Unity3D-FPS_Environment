@@ -15,7 +15,6 @@ public class KeyboardButtonBehavior : MonoBehaviour, IInteractable
 
     private void OnButtonPressed()
     {
-        Debug.Log(_key);
         ButtonPressed?.Invoke(_key);
     }
 }

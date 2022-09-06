@@ -80,6 +80,15 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AltFire"",
+                    ""type"": ""Button"",
+                    ""id"": ""2d51a395-4fbf-4fdf-b7a9-bdb0446af322"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -192,6 +201,17 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
                     ""action"": ""Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a0c2566e-c6d1-45d0-9838-227915514ebf"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse and Keyboard"",
+                    ""action"": ""AltFire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -223,6 +243,7 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
         m_FirstPerson_Pause = m_FirstPerson.FindAction("Pause", throwIfNotFound: true);
         m_FirstPerson_Select = m_FirstPerson.FindAction("Select", throwIfNotFound: true);
         m_FirstPerson_Fire = m_FirstPerson.FindAction("Fire", throwIfNotFound: true);
+        m_FirstPerson_AltFire = m_FirstPerson.FindAction("AltFire", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -288,6 +309,7 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_FirstPerson_Pause;
     private readonly InputAction m_FirstPerson_Select;
     private readonly InputAction m_FirstPerson_Fire;
+    private readonly InputAction m_FirstPerson_AltFire;
     public struct FirstPersonActions
     {
         private @FirstPersonInput m_Wrapper;
@@ -298,6 +320,7 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
         public InputAction @Pause => m_Wrapper.m_FirstPerson_Pause;
         public InputAction @Select => m_Wrapper.m_FirstPerson_Select;
         public InputAction @Fire => m_Wrapper.m_FirstPerson_Fire;
+        public InputAction @AltFire => m_Wrapper.m_FirstPerson_AltFire;
         public InputActionMap Get() { return m_Wrapper.m_FirstPerson; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -325,6 +348,9 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
                 @Fire.started -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnFire;
                 @Fire.performed -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnFire;
                 @Fire.canceled -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnFire;
+                @AltFire.started -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnAltFire;
+                @AltFire.performed -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnAltFire;
+                @AltFire.canceled -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnAltFire;
             }
             m_Wrapper.m_FirstPersonActionsCallbackInterface = instance;
             if (instance != null)
@@ -347,6 +373,9 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
                 @Fire.started += instance.OnFire;
                 @Fire.performed += instance.OnFire;
                 @Fire.canceled += instance.OnFire;
+                @AltFire.started += instance.OnAltFire;
+                @AltFire.performed += instance.OnAltFire;
+                @AltFire.canceled += instance.OnAltFire;
             }
         }
     }
@@ -368,5 +397,6 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
         void OnPause(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
+        void OnAltFire(InputAction.CallbackContext context);
     }
 }
