@@ -9,6 +9,7 @@ public class PlayerInputHandler : MonoBehaviour
 {
     public Vector2 MoveInput { get; private set; } = Vector2.zero;
     public Vector2 LookInput { get; private set; } = Vector2.zero;
+    public Vector2 MousePosition { get; private set; } = Vector2.zero;
     public static PlayerInputHandler Instance;
     public FirstPersonInput Inputs { get; private set; }
 
@@ -17,6 +18,9 @@ public class PlayerInputHandler : MonoBehaviour
     public event InteractButtonEventHandler InteractButtonPressed;
     public delegate void PauseButtonEventHandler();
     public event PauseButtonEventHandler PauseButtonPressed;
+
+    public delegate void FireButtonEventHandler();
+    public event FireButtonEventHandler FireButtonPressed;
     
 
     //Register to C# events.
@@ -29,6 +33,8 @@ public class PlayerInputHandler : MonoBehaviour
         Inputs.FirstPerson.Look.canceled += SetLook;
         Inputs.FirstPerson.Interact.performed += OnInteractPress;
         Inputs.FirstPerson.Pause.performed += OnPausePress;
+        Inputs.FirstPerson.Select.performed += SetSelect;
+        Inputs.FirstPerson.Fire.performed += OnPrimaryFire;
         Inputs.Enable();
     }
 
@@ -40,6 +46,8 @@ public class PlayerInputHandler : MonoBehaviour
         Inputs.FirstPerson.Look.performed -= SetLook;
         Inputs.FirstPerson.Look.canceled -= SetLook;
         Inputs.FirstPerson.Interact.performed -= OnInteractPress;
+        Inputs.FirstPerson.Select.performed -= SetSelect;
+        Inputs.FirstPerson.Fire.performed -= OnPrimaryFire;
         Inputs.Disable();
     }
 
@@ -53,6 +61,11 @@ public class PlayerInputHandler : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+    }
+
+    private void SetSelect(InputAction.CallbackContext ctx)
+    {
+        MousePosition = ctx.ReadValue<Vector2>();
     }
 
     private void SetMove(InputAction.CallbackContext ctx)
@@ -85,5 +98,10 @@ public class PlayerInputHandler : MonoBehaviour
     private void OnPausePress(InputAction.CallbackContext ctx)
     {
         PauseButtonPressed?.Invoke();
+    }
+
+    private void OnPrimaryFire(InputAction.CallbackContext ctx)
+    {
+        FireButtonPressed?.Invoke();
     }
 }

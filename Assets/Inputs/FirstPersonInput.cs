@@ -62,6 +62,24 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Select"",
+                    ""type"": ""Value"",
+                    ""id"": ""2f749419-340d-4ab1-8fa3-0d59d7270fb7"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Fire"",
+                    ""type"": ""Button"",
+                    ""id"": ""9d7a9b8a-5eeb-4af2-adc5-383b7681046b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -152,6 +170,28 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5e786c8b-8393-42b9-b9a3-41dcf49f9aeb"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse and Keyboard"",
+                    ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""570ddb15-9e5a-4b63-a37f-bce9d1c611b6"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse and Keyboard"",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -181,6 +221,8 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
         m_FirstPerson_Move = m_FirstPerson.FindAction("Move", throwIfNotFound: true);
         m_FirstPerson_Interact = m_FirstPerson.FindAction("Interact", throwIfNotFound: true);
         m_FirstPerson_Pause = m_FirstPerson.FindAction("Pause", throwIfNotFound: true);
+        m_FirstPerson_Select = m_FirstPerson.FindAction("Select", throwIfNotFound: true);
+        m_FirstPerson_Fire = m_FirstPerson.FindAction("Fire", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -244,6 +286,8 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_FirstPerson_Move;
     private readonly InputAction m_FirstPerson_Interact;
     private readonly InputAction m_FirstPerson_Pause;
+    private readonly InputAction m_FirstPerson_Select;
+    private readonly InputAction m_FirstPerson_Fire;
     public struct FirstPersonActions
     {
         private @FirstPersonInput m_Wrapper;
@@ -252,6 +296,8 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_FirstPerson_Move;
         public InputAction @Interact => m_Wrapper.m_FirstPerson_Interact;
         public InputAction @Pause => m_Wrapper.m_FirstPerson_Pause;
+        public InputAction @Select => m_Wrapper.m_FirstPerson_Select;
+        public InputAction @Fire => m_Wrapper.m_FirstPerson_Fire;
         public InputActionMap Get() { return m_Wrapper.m_FirstPerson; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -273,6 +319,12 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
                 @Pause.started -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnPause;
                 @Pause.performed -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnPause;
                 @Pause.canceled -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnPause;
+                @Select.started -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnSelect;
+                @Select.performed -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnSelect;
+                @Select.canceled -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnSelect;
+                @Fire.started -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnFire;
+                @Fire.performed -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnFire;
+                @Fire.canceled -= m_Wrapper.m_FirstPersonActionsCallbackInterface.OnFire;
             }
             m_Wrapper.m_FirstPersonActionsCallbackInterface = instance;
             if (instance != null)
@@ -289,6 +341,12 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
+                @Select.started += instance.OnSelect;
+                @Select.performed += instance.OnSelect;
+                @Select.canceled += instance.OnSelect;
+                @Fire.started += instance.OnFire;
+                @Fire.performed += instance.OnFire;
+                @Fire.canceled += instance.OnFire;
             }
         }
     }
@@ -308,5 +366,7 @@ public partial class @FirstPersonInput : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnSelect(InputAction.CallbackContext context);
+        void OnFire(InputAction.CallbackContext context);
     }
 }
